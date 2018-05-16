@@ -5,6 +5,9 @@ As meetup organizers, we are all too familiar with the issue of people hitting t
 
 Our goal is to allow event organizers to better anticipate the number of people who will actually arrive.
 
+[![Attendr](https://img.youtube.com/vi/tv9OMNdX7SI/0.jpg)](https://www.youtube.com/watch?v=tv9OMNdX7SI "Everything Is AWESOME")
+
+
 ## How to install
 1. `yarn`
 
