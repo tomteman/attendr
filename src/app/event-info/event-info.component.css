@@ -1,0 +1,8 @@
+.content {
+    margin-bottom: 35px;
+}
+
+.attendees {
+    display: flex;
+    justify-content: space-around;
+}

@@ -1,0 +1,33 @@
+<div class="inner" *ngIf="!charged">
+    <h1>Deposit Box Info</h1>
+
+    <div class="content">
+        <h2> Guests ({{attendeesNumber}}) </h2>
+        <div *ngIf="attendees" class="attendees">
+            <p *ngFor="let a of attendees"> {{a}} </p>
+        </div>
+    </div>
+
+    <form (submit)="checkin()" *ngIf="isOwner">
+        <ul class="actions vertical">
+            <li>
+                <div class="submit-wrapper">
+                    <input type="submit" value="Check In Guests" class="special fit">
+                </div>
+            </li>
+            <li>
+                <a (click)="charge()" class="button fit">Donate no-show funds</a>
+            </li>
+        </ul>
+    </form>
+</div>
+
+<div class="inner" *ngIf="charged">
+    <h1>Your Deposit Box is now empty</h1>
+    <div class="content">
+        <i class="large-icon fa fa-share-square-o" aria-hidden="true"></i>
+        <p>All no-show funds have been donated to your chosen charity</p>
+        <br>
+        <h2>You're such a philanthropist!</h2>
+    </div>
+</div>

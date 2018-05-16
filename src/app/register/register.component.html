@@ -1,0 +1,36 @@
+<div class="inner" *ngIf="!confirmed">
+    <h1>Show us you're serious! Make a deposit to reserve your spot</h1>
+    <div class="content">
+        <form (submit)="register(name.value, email.value)">
+            <section>
+                <div class="field">
+                    <label for="name">Your Name</label>
+                    <input type="text" name="name" autofocus="" #name>
+                </div>
+                <div class="field">
+                        <label for="email">Your Email</label>
+                        <input type="email" name="email" #email>
+                    </div>
+            </section>
+            <ul class="actions vertical">
+                <li>
+                    <div class="submit-wrapper">
+                        <button type="submit" class="special fit" [class.is-loading]="loading">Register</button>
+                    </div>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+
+<div class="inner" *ngIf="confirmed">
+    <h1>Wow, you ARE serious! That's awesome!!</h1>
+
+    <div class="content">
+        <h2>Your ether has been deposited successfully. Thanks for registering!</h2>
+        <i class="large-icon fa fa-star" aria-hidden="true"></i>
+        <p>When you get to the event, show the organizer a QR code of your Ethereum wallet to get back your deposit.<br>
+        To make things easier, we've also sent you an email with the QR code of your wallet's address</p>
+        <div class="qrcode" id="qrcode"></div>
+    </div>
+</div>

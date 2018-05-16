@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+
+.large-icon {
+    font-size: 5em;
+    color: #fff;
+    padding-bottom: 20px;
+}
+
+    .img-circular{
+       border-radius: 50%;
+        margin: 10px;
+        height: 100px;
+        width: 100px;
+    }
+

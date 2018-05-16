@@ -1,0 +1,11 @@
+.video-container {
+    position: relative;
+}
+
+.fa-check {
+    position: absolute;
+    left: calc(50% - 140px);
+    top: calc(50% - 150px);
+    font-size: 280px;
+    color: #43eb0c;
+}

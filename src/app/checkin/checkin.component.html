@@ -1,0 +1,15 @@
+<div class="inner">
+    <h1>Check In Guests</h1>
+    <p>
+        Scan the QR code of your guest's wallet to confirm their attendance.
+        <br>
+        Doing so will refund their deposit.
+    </p>
+
+    <div class="video-container">
+        <video id="preview" autoplay="autoplay"></video>
+        <i *ngIf="confirmed" class="fa fa-check"></i>
+    </div>
+
+    <a [routerLink]="['/event-info', eid]"> Deposit Box Info </a>
+</div>

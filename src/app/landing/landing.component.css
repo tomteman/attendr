@@ -1,0 +1,8 @@
+.team-member {
+    display: inline-block;
+}
+
+.team-members {
+    display: flex;
+    justify-content: space-around;
+}
