@@ -24,9 +24,9 @@ export class RegisterComponent implements OnInit {
         this.eid = this.activatedRoute.snapshot.params['eid'];
     }
 
-    async register(name: string) {
+    async register() {
         this.loading = true;
-        await this.eventContractService.registerToEvent(this.eid, name);
+        await this.eventContractService.registerToEvent(this.eid);
         this.loading = false;
         this.wallet = this.eventContractService.accounts[0];
         this.confirmed = true;

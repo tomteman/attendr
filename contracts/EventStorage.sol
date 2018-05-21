@@ -13,7 +13,6 @@ contract EventStorage {
 
     struct Attendee {
         address wallet;
-        bytes32 name;
         bool attended;
     }
 
@@ -41,11 +40,9 @@ contract EventStorage {
         return events[id].deposit;
     }
 
-    function registerToEvent(uint id, bytes32 name) payable {
-        if (msg.value < events[id].deposit) {
-            return;
-        }
-        events[id].attendees.push(Attendee({ wallet: msg.sender, name: name, attended: false }));
+    function registerToEvent(uint id) payable {
+        assert(msg.value >= events[id].deposit);
+        events[id].attendees.push(Attendee({ wallet: msg.sender, attended: false }));
     }
 
     function getAttendeesNumber(uint id) constant returns (uint) {
@@ -56,35 +53,31 @@ contract EventStorage {
         return events[id].owner;
     }
 
-    function getAttendees(uint id) constant returns (bytes32[]) {
-        bytes32[] memory result = new bytes32[](events[id].attendees.length);
+    function getAttendees(uint id) constant returns (address[]) {
+        address[] memory result = new address[](events[id].attendees.length);
 
         for (uint i = 0; i < events[id].attendees.length; i++) {
-            result[i] = (events[id].attendees[i].name);
+            result[i] = (events[id].attendees[i].wallet);
         }
 
         return result;
     }
 
     function checkin(uint id, address attendeeWallet) {
-        if (msg.sender != events[id].owner) {
-            return;
-        }
+        assert(msg.sender == events[id].owner);
 
         bool stop;
         for (uint i = 0; i < events[id].attendees.length && !stop; i++) {
             if (events[id].attendees[i].wallet == attendeeWallet && !events[id].attendees[i].attended) {
                 events[id].attendees[i].attended = true;
-                attendeeWallet.transfer(events[id].deposit * 1 ether);
+                attendeeWallet.transfer(events[id].deposit);
                 stop = true;
             }
         }
     }
 
     function charge(uint id) {
-        if (msg.sender != events[id].owner) {
-            return;
-        }
+        assert(msg.sender == events[id].owner);
 
         uint amount = 0;
 
@@ -94,6 +87,6 @@ contract EventStorage {
             }
         }
 
-        events[id].charity.transfer(amount * 1 ether);
+        events[id].charity.transfer(amount);
     }
 }

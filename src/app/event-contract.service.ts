@@ -24,7 +24,7 @@ export class EventContractService {
     }
 
     async createEvent(charityAddress: string, amount: number) {
-        await (await this.eventStorageInstance()).createEvent(charityAddress, amount, { from: this.accounts[0] });
+        await (await this.eventStorageInstance()).createEvent(charityAddress, this.web3.toWei(amount, 'ether'), { from: this.accounts[0] });
         return (await (await this.eventStorageInstance()).getEventsCount()).c[0];
     }
 
@@ -37,18 +37,7 @@ export class EventContractService {
     }
 
     async getAttendees(eid: number) {
-        const result = await (await this.eventStorageInstance()).getAttendees(eid);
-
-        return result.map(r => this.hex2a(r));
-    }
-
-    private hex2a(hexx) {
-        const hex = hexx.toString();
-        let str = '';
-        for (let i = 0; i < hex.length; i += 2) {
-            str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-        }
-        return str;
+        return (await (await this.eventStorageInstance()).getAttendees(eid));
     }
 
     async getEventOwner(eid: number) {
@@ -59,9 +48,9 @@ export class EventContractService {
         return (await (await this.eventStorageInstance()).getCharity(eid)).c[0];
     }
 
-    async registerToEvent(eid: number, name: string) {
+    async registerToEvent(eid: number) {
         const deposit = await this.getEventDepositAmount(eid);
-        return await (await this.eventStorageInstance()).registerToEvent(eid, name, { from: this.accounts[0], value: this.web3.toWei(deposit, 'ether') });
+        return await (await this.eventStorageInstance()).registerToEvent(eid, { from: this.accounts[0], value: deposit });
     }
 
     async checkin(eid: number, attendeeWallet: string) {
