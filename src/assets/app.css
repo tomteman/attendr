@@ -1166,6 +1166,7 @@ label.optional:after {
 }
 input[type="text"],
 input[type="password"],
+input[type="datetime-local"],
 input[type="email"],
 input[type="color"],
 input[type="range"],
@@ -1187,6 +1188,7 @@ textarea {
 }
 input[type="text"]:invalid,
 input[type="password"]:invalid,
+input[type="datetime-local"]:invalid,
 input[type="email"]:invalid,
 input[type="color"]:invalid,
 input[type="range"]:invalid,
@@ -1196,6 +1198,7 @@ textarea:invalid {
 }
 input[type="text"]:focus,
 input[type="password"]:focus,
+input[type="datetime-local"]:focus,
 input[type="email"]:focus,
 input[type="color"]:focus,
 input[type="range"]:focus,
@@ -1205,6 +1208,7 @@ textarea:focus {
 }
 input[type="text"][data-invalid],
 input[type="password"][data-invalid],
+input[type="datetime-local"][data-invalid],
 input[type="email"][data-invalid],
 input[type="color"][data-invalid],
 input[type="range"][data-invalid],
@@ -1214,6 +1218,7 @@ textarea[data-invalid] {
 }
 input[type="text"][data-verifailed],
 input[type="password"][data-verifailed],
+input[type="datetime-local"][data-verifailed],
 input[type="email"][data-verifailed],
 input[type="color"][data-verifailed],
 input[type="range"][data-verifailed],
@@ -1279,6 +1284,7 @@ textarea[data-verifailed] {
 }
 input[type="text"],
 input[type="password"],
+input[type="datetime-local"],
 input[type="email"],
 input[type="color"],
 input[type="range"],
