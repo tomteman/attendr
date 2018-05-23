@@ -21,7 +21,7 @@ export class CreateEventComponent implements OnInit {
 
     async create(address: string, amount: string, date: string) {
         this.loading = true;
-        this.eventId = await this.eventContractService.createEvent(address, Number(amount), new Date(date).valueOf());
+        this.eventId = await this.eventContractService.createEvent(address, Number(amount), new Date(date).valueOf()/1000);
         this.loading = false;
     }
 

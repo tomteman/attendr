@@ -82,10 +82,16 @@ contract EventStorage {
         }
     }
 
+    function getTime() internal returns (uint) {
+        return now;
+    }
+
     function charge(uint id) {
         if (msg.sender != events[id].owner) {
             return;
         }
+
+        require(getTime() > events[id].endDate);
 
         uint amount = 0;
 
