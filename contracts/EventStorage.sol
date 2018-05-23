@@ -87,11 +87,8 @@ contract EventStorage {
     }
 
     function charge(uint id) {
-        if (msg.sender != events[id].owner) {
-            return;
-        }
-
-        require(getTime() > events[id].endDate);
+        // Anyone can now call 'charge' 48 hours+ after the event end date
+        require(getTime() > (events[id].endDate + 60*60*48));
 
         uint amount = 0;
 
