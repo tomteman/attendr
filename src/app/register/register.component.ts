@@ -1,6 +1,7 @@
 import { EventContractService } from './../event-contract.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 declare var QRCode: any;
 
@@ -21,6 +22,7 @@ export class RegisterComponent implements OnInit {
     constructor(
         private activatedRoute: ActivatedRoute,
         private eventContractService: EventContractService,
+        private http: HttpClient
     ) { }
 
     async ngOnInit() {
@@ -29,7 +31,7 @@ export class RegisterComponent implements OnInit {
         this.getEthPriceUSD();
     }
 
-    getEthPriceUSD(depositAmount) {
+    getEthPriceUSD() {
       this.http.get("https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD").subscribe(result => {
           this.ethPrice = result;
           this.ethInUSD = +((this.ethPrice.USD*this.depositAmount).toFixed(2));
