@@ -1,5 +1,5 @@
 <div class="inner" *ngIf="!confirmed">
-    <h1>Show us you're serious! Make a deposit to reserve your spot</h1>
+    <h1>Show us you're serious! Make a {{depositAmount}} ETH / ${{ethInUSD}} deposit to reserve your spot</h1>
     <div class="content">
         <form (submit)="register(name.value, email.value)">
             <section>

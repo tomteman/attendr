@@ -8,8 +8,8 @@
                     <input type="text" name="charity" autofocus="" #address value="0xdB78F0C379073E10002c0a9F696315413F607ecc">
                 </div>
                 <div class="field">
-                    <label for="amount">Deposit Amount (Ether)</label>
-                    <input type="text" name="amount" #amount value="0.001">
+                    <label for="amount">Deposit Amount (Ether) ${{ethInUSD}}</label>
+                    <input type="text" name="amount" #amount value="{{startingVal}}" (keyup)="changeAmount(amount.value)">
                 </div>
                 <div class="field">
                     <label for="date">Event End Date & Time</label>

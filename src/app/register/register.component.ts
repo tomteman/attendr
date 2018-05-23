@@ -14,6 +14,9 @@ export class RegisterComponent implements OnInit {
     confirmed: boolean;
     wallet: string;
     loading: boolean;
+    depositAmount: number;
+    ethPrice: any;
+    ethInUSD: number;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -22,6 +25,15 @@ export class RegisterComponent implements OnInit {
 
     async ngOnInit() {
         this.eid = this.activatedRoute.snapshot.params['eid'];
+        this.depositAmount = await this.eventContractService.getEventDepositAmount(this.eid)
+        this.getEthPriceUSD();
+    }
+
+    getEthPriceUSD(depositAmount) {
+      this.http.get("https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD").subscribe(result => {
+          this.ethPrice = result;
+          this.ethInUSD = +((this.ethPrice.USD*this.depositAmount).toFixed(2));
+      });
     }
 
     async register(name: string) {
