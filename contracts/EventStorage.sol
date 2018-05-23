@@ -25,11 +25,12 @@ contract EventStorage {
         return events[id].charity;
     }
 
-    function createEvent(address charity, uint deposit) returns (uint) {
+    function createEvent(address charity, uint deposit, uint endDate) returns (uint) {
         eventsCount++;
         events[eventsCount].owner = msg.sender;
         events[eventsCount].charity = charity;
         events[eventsCount].deposit = deposit;
+        events[eventsCount].endDate = endDate;
         return eventsCount;
     }
 

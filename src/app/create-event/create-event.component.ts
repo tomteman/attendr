@@ -19,9 +19,9 @@ export class CreateEventComponent implements OnInit {
     ngOnInit() {
     }
 
-    async create(address: string, amount: string) {
+    async create(address: string, amount: string, date: string) {
         this.loading = true;
-        this.eventId = await this.eventContractService.createEvent(address, Number(amount));
+        this.eventId = await this.eventContractService.createEvent(address, Number(amount), new Date(date).valueOf());
         this.loading = false;
     }
 
