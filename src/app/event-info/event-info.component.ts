@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     styleUrls: ['./event-info.component.css']
 })
 export class EventInfoComponent implements OnInit {
-    eid: number;
+    eid: string;
     attendeesNumber: number;
     charged: boolean;
     attendees: string[];

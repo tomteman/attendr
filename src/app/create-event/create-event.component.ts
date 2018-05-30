@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./create-event.component.css']
 })
 export class CreateEventComponent implements OnInit {
-    eventId: number;
+    eventId: string;
     origin = location.origin;
     loading: boolean;
 

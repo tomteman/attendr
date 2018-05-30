@@ -1,92 +1,132 @@
 pragma solidity ^0.4.2;
 
-contract EventStorage {
-    uint eventsCount;
-    mapping (uint => Event) events;
+contract Event {
 
-    struct Event {
-        address owner;
-        address charity;
-        uint deposit;
-        Attendee[] attendees;
-    }
+    address owner;
+    address charity;
+    uint deposit;
+    Attendee[] attendees;
 
     struct Attendee {
         address wallet;
         bool attended;
     }
 
-    function getBalance() constant returns (uint) {
-        return this.balance;
+    function Event(address _owner, address _charity, uint _deposit) public {
+        owner = _owner;
+        charity = _charity;
+        deposit = _deposit;
     }
 
-    function getCharity(uint id) constant returns (address) {
-        return events[id].charity;
+    function getInfo() public constant returns (address, address, uint, address[]) {
+        return (owner, charity, deposit, getAttendees());
     }
 
-    function createEvent(address charity, uint deposit) returns (uint) {
-        eventsCount++;
-        events[eventsCount].owner = msg.sender;
-        events[eventsCount].charity = charity;
-        events[eventsCount].deposit = deposit;
-        return eventsCount;
+    function getBalance() public constant returns (uint) {
+        return address(this).balance;
     }
 
-    function getEventsCount() constant returns  (uint) {
-        return eventsCount;
+    function getCharity() public constant returns (address) {
+        return charity;
     }
 
-    function getEventDepositAmount(uint id) constant returns  (uint) {
-        return events[id].deposit;
+    function getEventDepositAmount() public constant returns  (uint) {
+        return deposit;
     }
 
-    function registerToEvent(uint id) payable {
-        assert(msg.value >= events[id].deposit);
-        events[id].attendees.push(Attendee({ wallet: msg.sender, attended: false }));
+    function registerToEvent() public payable {
+        assert(msg.value >= deposit);
+        attendees.push(Attendee({ wallet: msg.sender, attended: false }));
     }
 
-    function getAttendeesNumber(uint id) constant returns (uint) {
-        return events[id].attendees.length;
+    function getAttendeesNumber() public constant returns (uint) {
+        return attendees.length;
     }
 
-    function getEventOwner(uint id) constant returns (address) {
-        return events[id].owner;
+    function getEventOwner() public constant returns (address) {
+        return owner;
     }
 
-    function getAttendees(uint id) constant returns (address[]) {
-        address[] memory result = new address[](events[id].attendees.length);
+    function getAttendees() public constant returns (address[]) {
+        address[] memory result = new address[](attendees.length);
 
-        for (uint i = 0; i < events[id].attendees.length; i++) {
-            result[i] = (events[id].attendees[i].wallet);
+        for (uint i = 0; i < attendees.length; i++) {
+            result[i] = (attendees[i].wallet);
         }
 
         return result;
     }
 
-    function checkin(uint id, address attendeeWallet) {
-        assert(msg.sender == events[id].owner);
+    function checkin(address attendeeWallet) public constant {
+        assert(msg.sender == owner);
 
         bool stop;
-        for (uint i = 0; i < events[id].attendees.length && !stop; i++) {
-            if (events[id].attendees[i].wallet == attendeeWallet && !events[id].attendees[i].attended) {
-                events[id].attendees[i].attended = true;
-                attendeeWallet.transfer(events[id].deposit);
+        for (uint i = 0; i < attendees.length && !stop; i++) {
+            if (attendees[i].wallet == attendeeWallet && !attendees[i].attended) {
+                attendees[i].attended = true;
+                attendeeWallet.transfer(deposit);
                 stop = true;
             }
         }
     }
 
-    function charge(uint id) {
-        assert(msg.sender == events[id].owner);
+    function charge() public {
+        assert(msg.sender == owner);
 
         uint amount = 0;
 
-        for (uint i = 0; i < events[id].attendees.length; i++) {
-            if (!events[id].attendees[i].attended) {
-                amount = amount + events[id].deposit;
+        for (uint i = 0; i < attendees.length; i++) {
+            if (!attendees[i].attended) {
+                amount = amount + deposit;
             }
         }
 
-        events[id].charity.transfer(amount);
+        charity.transfer(amount);
+    }
+
+    function isOwnerOrAttendee(address wallet) constant public returns (bool) {
+        if (owner == wallet) return true;
+
+        for (uint i = 0; i < attendees.length; i++) {
+            if (attendees[i].wallet == wallet) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+contract EventStorage {
+    
+    address[] events;
+
+    function createEvent(address charity, uint deposit) public returns (address) {
+        address newEvent = new Event(msg.sender, charity, deposit);
+        events.push(newEvent);
+        return newEvent;
+    }
+
+    function getEventsCount() public constant returns (uint) {
+        return events.length;
+    }
+
+    function listJoinEvents() public constant returns (address[]) {
+        address[] memory result = new address[](events.length);
+
+        uint i = 0;
+        uint count = 0;
+        for (i = 0; i < events.length; i++) {
+            if (Event(events[i]).isOwnerOrAttendee(msg.sender)) {
+                result[count] = events[i];
+                count++;
+            }
+        }
+        address[] memory ret = new address[](count);
+        for (i = 0; i < count; i++) {
+            ret[i] = result[i];
+        }
+
+        return ret;
     }
 }

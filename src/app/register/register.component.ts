@@ -10,7 +10,7 @@ declare var QRCode: any;
     styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-    eid: number;
+    eid: string;
     confirmed: boolean;
     wallet: string;
     loading: boolean;
