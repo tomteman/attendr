@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class CreateEventComponent implements OnInit {
-    eventId: number;
+    eventId: string;
     origin = location.origin;
     loading: boolean;
     startingVal = .001;

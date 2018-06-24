@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+const EventContract = require('../../build/contracts/Event.json');
 const EventStorageContract = require('../../build/contracts/EventStorage.json');
 import * as getWeb3 from '../utils/getWeb3';
 import * as contract from 'truffle-contract';
@@ -8,6 +9,7 @@ export class EventContractService {
     web3: any = getWeb3.web3;
     accounts: string[];
     _eventStorageInstance: any;
+    _event: any;
 
     constructor() {
     }
@@ -23,53 +25,51 @@ export class EventContractService {
         return Promise.resolve(this._eventStorageInstance);
     }
 
-    async createEvent(charityAddress: string, amount: number, endDate: number) {
-        await (await this.eventStorageInstance()).createEvent(charityAddress, amount, endDate, { from: this.accounts[0] });
-        return (await (await this.eventStorageInstance()).getEventsCount()).c[0];
-    }
-
-    async getEventDepositAmount(eid: number) {
-        return (await (await this.eventStorageInstance()).getEventDepositAmount(eid)).c[0];
-    }
-
-    async getAttendeesNumber(eid: number) {
-        return (await (await this.eventStorageInstance()).getAttendeesNumber(eid)).c[0];
-    }
-
-    async getAttendees(eid: number) {
-        const result = await (await this.eventStorageInstance()).getAttendees(eid);
-
-        return result.map(r => this.hex2a(r));
-    }
-
-    private hex2a(hexx) {
-        const hex = hexx.toString();
-        let str = '';
-        for (let i = 0; i < hex.length; i += 2) {
-            str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    async eventInstance(eid: string) {
+        if (!this._event) {
+            this._event = contract(EventContract);
+            this._event.setProvider(this.web3.currentProvider);
         }
-        return str;
+
+
+        return Promise.resolve(this._event.at(eid));
     }
 
-    async getEventOwner(eid: number) {
-        return await (await this.eventStorageInstance()).getEventOwner(eid);
+    async createEvent(charityAddress: string, amount: number) {
+        return (await (await this.eventStorageInstance()).createEvent(charityAddress, this.web3.toWei(amount, 'ether'), { from: this.accounts[0] })).c[0];
     }
 
-    async getCharityAmount(eid: number) {
-        return (await (await this.eventStorageInstance()).getCharity(eid)).c[0];
+    async getEventDepositAmount(eid: string) {
+        return (await (await this.eventInstance(eid)).getEventDepositAmount()).c[0];
     }
 
-    async registerToEvent(eid: number, name: string) {
+    async getAttendeesNumber(eid: string) {
+        return (await (await this.eventInstance(eid)).getAttendeesNumber()).c[0];
+    }
+
+    async getAttendees(eid: string) {
+        return (await (await this.eventInstance(eid)).getAttendees());
+    }
+
+    async getEventOwner(eid: string) {
+        return await (await this.eventInstance(eid)).getEventOwner();
+    }
+
+    async getCharityAmount(eid: string) {
+        return (await (await this.eventInstance(eid)).getCharity()).c[0];
+    }
+
+    async registerToEvent(eid: string) {
         const deposit = await this.getEventDepositAmount(eid);
-        return await (await this.eventStorageInstance()).registerToEvent(eid, name, { from: this.accounts[0], value: this.web3.toWei(deposit, 'ether') });
+        return await (await this.eventInstance(eid)).registerToEvent({ from: this.accounts[0], value: deposit });
     }
 
-    async checkin(eid: number, attendeeWallet: string) {
-        return await (await this.eventStorageInstance()).checkin(eid, attendeeWallet, { from: this.accounts[0] });
+    async checkin(eid: string, attendeeWallet: string) {
+        return await (await this.eventInstance(eid)).checkin(attendeeWallet, { from: this.accounts[0] });
     }
 
-    async charge(eid: number) {
-        return await (await this.eventStorageInstance()).charge(eid, { from: this.accounts[0] });
+    async charge(eid: string) {
+        return await (await this.eventInstance(eid)).charge({ from: this.accounts[0] });
     }
 
     getAccounts(web3) {

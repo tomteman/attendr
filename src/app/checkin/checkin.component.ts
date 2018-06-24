@@ -10,7 +10,7 @@ declare var Instascan: any;
     styleUrls: ['./checkin.component.css']
 })
 export class CheckinComponent implements OnInit {
-    eid: number;
+    eid: string;
     confirmed: boolean;
 
     constructor(

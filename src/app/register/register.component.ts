@@ -11,7 +11,7 @@ declare var QRCode: any;
     styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-    eid: number;
+    eid: string;
     confirmed: boolean;
     wallet: string;
     loading: boolean;
@@ -38,9 +38,9 @@ export class RegisterComponent implements OnInit {
       });
     }
 
-    async register(name: string) {
+    async register() {
         this.loading = true;
-        await this.eventContractService.registerToEvent(this.eid, name);
+        await this.eventContractService.registerToEvent(this.eid);
         this.loading = false;
         this.wallet = this.eventContractService.accounts[0];
         this.confirmed = true;
