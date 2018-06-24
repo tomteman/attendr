@@ -25,11 +25,12 @@ contract EventStorage {
         return events[id].charity;
     }
 
-    function createEvent(address charity, uint deposit) returns (uint) {
+    function createEvent(address charity, uint deposit, uint endDate) returns (uint) {
         eventsCount++;
         events[eventsCount].owner = msg.sender;
         events[eventsCount].charity = charity;
         events[eventsCount].deposit = deposit;
+        events[eventsCount].endDate = endDate;
         return eventsCount;
     }
 
@@ -81,10 +82,13 @@ contract EventStorage {
         }
     }
 
+    function getTime() internal returns (uint) {
+        return now;
+    }
+
     function charge(uint id) {
-        if (msg.sender != events[id].owner) {
-            return;
-        }
+        // Anyone can now call 'charge' 48 hours+ after the event end date
+        require(getTime() > (events[id].endDate + 60*60*48));
 
         uint amount = 0;
 

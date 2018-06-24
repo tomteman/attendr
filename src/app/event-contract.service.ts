@@ -23,8 +23,8 @@ export class EventContractService {
         return Promise.resolve(this._eventStorageInstance);
     }
 
-    async createEvent(charityAddress: string, amount: number) {
-        await (await this.eventStorageInstance()).createEvent(charityAddress, amount, { from: this.accounts[0] });
+    async createEvent(charityAddress: string, amount: number, endDate: number) {
+        await (await this.eventStorageInstance()).createEvent(charityAddress, amount, endDate, { from: this.accounts[0] });
         return (await (await this.eventStorageInstance()).getEventsCount()).c[0];
     }
 

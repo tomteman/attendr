@@ -1,15 +1,19 @@
 <div class="inner" *ngIf="!eventId">
     <h1>Create Deposit Box</h1>
     <div class="content">
-        <form (submit)="create(address.value, amount.value)">
+        <form (submit)="create(address.value, amount.value, date.value)">
             <section>
                 <div class="field">
                     <label for="charity">Charity Address</label>
                     <input type="text" name="charity" autofocus="" #address value="0xdB78F0C379073E10002c0a9F696315413F607ecc">
                 </div>
                 <div class="field">
-                    <label for="amount">Deposit Amount (Ether)</label>
-                    <input type="text" name="amount" #amount value="0.001">
+                    <label for="amount">Deposit Amount (Ether) ${{ethInUSD}}</label>
+                    <input type="text" name="amount" #amount value="{{startingVal}}" (keyup)="changeAmount(amount.value)">
+                </div>
+                <div class="field">
+                    <label for="date">Event End Date & Time</label>
+                    <input type="datetime-local" name="amount" #date>
                 </div>
             </section>
             <ul class="actions vertical">

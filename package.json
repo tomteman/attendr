@@ -16,6 +16,7 @@
     "deploy": "npm run build && firebase deploy"
   },
   "dependencies": {
+    "@angular-devkit/core": "^0.6.3",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",
     "@angular/core": "^4.0.0",
