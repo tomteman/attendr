@@ -31,6 +31,7 @@ export class EventContractService {
             this._event.setProvider(this.web3.currentProvider);
         }
 
+
         return Promise.resolve(this._event.at(eid));
     }
 

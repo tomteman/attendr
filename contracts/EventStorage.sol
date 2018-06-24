@@ -22,10 +22,6 @@ contract Event {
         return (owner, charity, deposit, getAttendees());
     }
 
-    function getBalance() public constant returns (uint) {
-        return address(this).balance;
-    }
-
     function getCharity() public constant returns (address) {
         return charity;
     }
@@ -70,8 +66,14 @@ contract Event {
         }
     }
 
-    function charge() public {
-        assert(msg.sender == owner);
+
+    function getTime() internal returns (uint) {
+        return now;
+    }
+
+    function charge(uint id) {
+        // Anyone can now call 'charge' 48 hours+ after the event end date
+        require(getTime() > (events[id].endDate + 60*60*48));
 
         uint amount = 0;
 
